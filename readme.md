@@ -10,7 +10,7 @@ Seja bem-vindo! Este desafio foi projetado para avaliar a sua capacidade técnic
 4. Após finalizar, submeta um pull request e aguarde nossa avaliação;
 
 ## Proposta
-Você deverá desenvolver uma central de ajuda. Esta plataforma de deverá possuir uma API construída com Node.js utilizando o framework de sua preferência que servirá para fornecer a comunicação necessária a uma aplicação web ReactJS por onde os atendentes estarão dando suporte a usuários que abrirão chamados por um aplicativo móvel construído com React Native.
+Você deverá desenvolver uma central de ajuda. Esta plataforma deverá possuir uma API construída com Node.js utilizando o framework de sua preferência que servirá para fornecer a comunicação necessária a uma aplicação web ReactJS por onde os atendentes estarão dando suporte a usuários que abrirão chamados por um aplicativo móvel construído com React Native.
 
 Esta plataforma deve atender as seguintes histórias:
 - Eu como usuário do aplicativo desejo abrir um chamado;
