@@ -24,8 +24,8 @@ Esta plataforma deve atender as seguintes histórias:
 > **Observações:**
 > - Sua aplicação web DEVE se comunicar com sua API;
 > - Sua aplicação mobile DEVE se comunicar com sua API;
-> - Você pode utilizar os bancos de dados relacional (ou não) de sua preferência.
+> - Você pode utilizar os bancos de dados relacional (ou não relacional) de sua preferência.
 > - Você pode utilizar a estratégia que lhe for pertinente para garantir a comunicação em tempo real das aplicações web e mobile;
 
 ## Diferenciais
-Serão considerados diferenciais o desenvolvimento de testes unitários em qualquer uma das aplicações desenvolvidas.
+Serão considerados diferenciais o desenvolvimento de testes unitários e de integração em qualquer uma das aplicações desenvolvidas.
