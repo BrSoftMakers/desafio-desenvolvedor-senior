@@ -1,0 +1,34 @@
+@layout('layouts.master')
+@section('body')
+<main id="main" class="main">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-header">
+            <div class="md-09">All tickets</div>
+            <div class="md-03 text-right"><a href="/chamados/create" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Novo</a></div>
+          </div>
+          <div class="card-body">
+            <script>
+              let columnDef = [{
+                        targets: [8,9],
+                        searchable: true,
+                        visible: false
+                    }]
+            </script>
+            {{ csrfField() }}
+            @!component('components.table',
+            url = '/chamados/todos',
+            resource = '/chamados',
+            cabecalho = ['#','Data', 'Usario', 'Tel', 'Problema', 'Equipamento', 'Atentende', 'Status', 'Departmento',
+            'Predio'],
+            colunas = ['id', 'created_at', 'usuario.nomeAbreviado', 'ramal', 'problema.nome', 'patrimonio', 'operador',
+            'status.nome', 'setor.nome', 'predio.nome'],
+            columnDefs = 'columnDef',
+            editar = true,
+            detail = 'descricao'
+            )
+          </div>
+        </div>
+        @endsection

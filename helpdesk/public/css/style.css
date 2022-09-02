@@ -1,0 +1,65 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  background-color: #efefef
+}
+.my-table-sm{
+    font-size: 0.9rem;
+}
+
+table.dataTable tbody td {
+  vertical-align: middle;
+  font-size: .95rem;
+}
+
+table.dataTable tbody tr {
+  cursor: help;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  background-color: #fafafa;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* summernote font-size */
+.note-editable {
+  font-size: 14px;
+  color: #495057;
+}
+
+.note-editable[contenteditable="false"] {
+  background-color: #e9ecef !important;
+}
+.note-editable p {
+  color: #495057;
+}
+
+.note-btn {
+  font-size: .75rem;
+  padding: .10rem .5rem;
+}
+
+.note-placeholder {
+  font-size: 14px;
+}
+
+
+.mySelectPicker {
+  border: 1px solid #ced4da ;
+  background-color: #f8f9fa;
+}
+.mySelectPicker:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+  color: #495057;
+  border-radius: .2rem; 
+}

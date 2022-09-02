@@ -1,0 +1,26 @@
+@layout('layouts.master')
+@section('body')
+<main id="main" class="main">
+  <section class="section">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title text-right">
+            <a href="/usuarios/create"><button type="submit" class="btn btn-secondary">Novo Usuário</button></a>
+            @!component('components.btnVoltar', type='primary', type2='block')
+          </div>
+          {{ csrfField() }}
+          @!component('components.table',
+          url ='/usuarios',
+          resource ='/usuarios',
+          cabecalho = ['#','Nome', 'Login', 'Email', 'Função', 'Receber Email?'],
+          colunas = ['id', 'nome', 'login', 'email', 'funcao', 'receberEmail'],
+          editar = true,
+          deletar = true
+          )
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+@endsection

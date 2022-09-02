@@ -1,0 +1,50 @@
+@layout('layouts.master')
+@section('body')
+<div  class="mx-auto" style="max-width: 600px;" >
+        <legend>
+        @if(setor)
+            Edit department
+        @else
+            New department
+        @endif
+        </legend>
+        <hr>
+        <form action="{{ route('SetorController.store') }}" method="POST" id="form">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="nome">Name</label>
+                <input type="text" value="{{ old('nome', '') }}" name="nome" class="form-control form-control-sm" placeholder="Department's name" required>
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    <label for="descricao">Description</label>
+                    <input type="text" value="{{ old('descricao', '') }}" name="descricao" class="form-control form-control-sm" placeholder="Optional">
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="centro">Headquarter</label>
+                    <select name="centro" class="form-control form-control-sm custom-select" required>
+                        <option value="" disabled selected>Select ...</option>
+                        <option value="TOR">Toronto</option>
+                        <option value="NY">New York</option>
+                        <option value="BER">Berlin</option>
+                    </select>
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('centro'), hasErrorFor('centro')) }}
+                </div>
+            </div>
+            <hr>
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+        </form>
+</div>
+
+@if(setor)
+    <script>
+        $("[name='nome']").val('{{setor.nome}}')
+        $("[name='descricao']").val('{{setor.descricao}}')
+        $("[name='centro']").val('{{setor.centro}}')
+        $('#form').attr('action', "{{ route('SetorController.update', {id: setor.id}) }}?_method=PUT")
+    </script>
+@endif
+@endsection

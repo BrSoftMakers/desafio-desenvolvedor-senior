@@ -1,0 +1,28 @@
+@layout('layouts.master')
+@section('body')
+<div  class="mx-auto" style="max-width: 600px;" >
+        <legend>
+        @if(area)
+            Edit area
+        @else
+            New area
+        @endif
+        </legend>
+        <hr>
+        <form action="{{{ (area ? route('AreaController.update', {id: area.id}) + '?_method=PUT' : route('AreaController.store')) }}}" method="POST" id="form">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="nome">Name</label>
+                <input required id="inputNome" type="text" name="nome" class="form-control" placeholder="Area's name" value="{{{ area.nome ? area.nome : old('nome', '')}}}">
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+            <div class="form-group">
+                <label for="descricao">Description</label>
+                <input id="inputDescricao" type="text" name="descricao" class="form-control" placeholder="Optional" value="{{{ area.descricao ? area.descricao : ''}}}">
+            </div>
+            <hr>
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+        </form>
+</div>
+@endsection

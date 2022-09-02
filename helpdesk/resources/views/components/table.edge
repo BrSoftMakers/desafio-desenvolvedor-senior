@@ -1,0 +1,141 @@
+<div class="input-group mb-3">
+  <input id="searchInput" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar">
+</div>
+
+<table id="dataTable" class="table table-striped table-hover" style="width:100%;">
+  <thead>
+    <tr>
+      @each(item in cabecalho)
+      <th scope="col">{{item}}</th>
+      @endeach
+      <th scope="col" data-width="5%">Ações</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready(function () {
+        var myTable = $('#dataTable').DataTable({
+            dom: 'tpil',
+            pageLength: 50,
+            processing: true,
+            ajax: {
+                url: '{{url}}',
+                dataSrc: ''
+            },
+            order: [[{{order ? order : 0}}, 'desc']],
+            columns: [
+                @each(item in colunas)
+                    { data: '{{item}}'},
+                @endeach
+                {
+                    data: actionColumn
+                }
+            ]
+            @if(columnDefs)
+              ,
+              columnDefs: {{columnDefs}}
+            @endif
+            @if(initCompleteFn)
+              ,
+              initComplete: {{initCompleteFn}}
+            @endif
+            , language: {
+                "loadingRecords": '<i class="fas fa-spinner fa-spin text-primary" style="font-size: 20px"></i>',
+                "decimal":        "",
+                "emptyTable":     "No data available in table",
+                "info":           "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty":      "Showing 0 to 0 of 0 entries",
+                "infoFiltered":   "(filtered from _MAX_ total entries)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Limitar a _MENU_ registros",
+                "processing":     "Processando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No matching records found",
+                "paginate": {
+                    "first":      "Primeiro",
+                    "last":       "Último",
+                    "next":       "Próximo",
+                    "previous":   "Anterior"
+            }
+}
+        })
+        myTable.tables().containers().to$().css({'padding-left': '0px', 'padding-right': '0px'})
+
+
+        function actionColumn(data, type, row) {
+            let buttons = ['<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">']
+
+            @if(editar)
+              buttons.push('<a href="{{resource}}/' + data['{{editar_id ? editar_id : "id"}}'] + '/edit" class="btn btn-secondary"><i class="fas fa-eye"></i></a>')
+            @endif
+
+            @if(deletar)
+              buttons.push('<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>')
+            @endif
+
+            buttons.push('</div>')
+
+            return buttons.join('')
+        }
+
+        @if(detail)
+        // TODO: fixo, pode ficar generico essa treta
+        function format(data) {
+            // const leaf = (obj, path) => (path.split('.').reduce((value,el) => value[el], obj))
+            const leaf = function(obj, path) {
+                return path.split('.').reduce(function(value,el) {
+                    return value[el]
+                }, obj)
+            }
+            data = leaf(data, '{{detail}}')
+            return '<div class="alert alert-warning m-0" role="alert">' + data + '</div>'
+        }
+
+        $('tbody').on('click', 'td:not(:has(a, div))', function () {
+            var tr = $(this).closest('tr');
+            var row = myTable.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        })
+        @endif
+
+        $('tbody').on('click', '.btn-danger', function(event) {
+            const rowSelector = $(this).closest('tr')
+            const id = myTable.row(rowSelector).data().id
+            const resposta = confirm('Tem certeza que deseja excluir esse registro?')
+            if(resposta) {
+                $.ajax({
+                    method: 'DELETE',
+                    url: '{{resource}}/' + id,
+                    data: { _csrf: $("input[name='_csrf']").val() },
+                    success: function(response) {
+                        {{--  $('#tableAlert').html(response)  --}}
+                        {{--  $('#tableAlert').toggleClass('alert-success show')  --}}
+                        myTable.row(rowSelector).remove().draw()
+                        alertify.success(response)
+                    },
+                    error: function(jqXHR, status, error) {
+                        {{--  $('#tableAlert').html(jqXHR.responseText)  --}}
+                        {{--  $('#tableAlert').toggleClass('alert-danger show')  --}}
+                        alertify.error(jqXHR.responseText)
+                    }
+                })
+            }
+        })
+
+        $('#searchInput').on('keyup', function () {
+            myTable.search(this.value).draw();
+        })
+    })
+</script>

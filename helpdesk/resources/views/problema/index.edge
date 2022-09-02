@@ -1,0 +1,18 @@
+@layout('layouts.master') 
+@section('sidebar')
+    <a href="/problemas/create" class="btn btn-dark btn-block">New Problem</a>
+    <div class="mt-3">
+        @!component('components.btnVoltar', type='primary', type2='block')
+    </div>
+@endsection 
+@section('mainContent')
+        {{ csrfField() }}
+        @!component('components.table', 
+            url ='/problemas', 
+            resource ='/problemas', 
+            cabecalho = ['#','Name', 'Area', 'SLA', 'Priority'],
+            colunas = ['id', 'nome', 'area.nome', 'sla', 'prioridade'],
+            editar = true,
+            deletar = true
+        )
+@endsection

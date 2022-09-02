@@ -1,0 +1,18 @@
+@layout('layouts.master') 
+@section('sidebar')
+    <a href="/status/create" class="btn btn-dark btn-block">New Ticket Status</a>
+    <div class="mt-3">
+        @!component('components.btnVoltar', type='primary', type2='block')
+    </div>
+@endsection 
+@section('mainContent')
+        {{ csrfField() }}
+        @!component('components.table', 
+            url ='/status', 
+            resource ='/status', 
+            cabecalho = ['#','Name', 'Enabled', 'Enable Operator'],
+            colunas = ['id', 'nome', 'habilitado', 'habilitadoOperador'],
+            editar = true,
+            deletar = true
+        )
+@endsection

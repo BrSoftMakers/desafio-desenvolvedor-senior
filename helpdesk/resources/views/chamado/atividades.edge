@@ -1,0 +1,35 @@
+@layout('layouts.master')
+@section('body')
+{{ script('js/populate') }}
+<main id="main" class="main">
+
+  <section class="section dashboard">
+    <div class="row">
+      <div class="card">
+        <div class="card-header pb-2">
+          <span>Today's activities</span>
+          <ul class="nav nav-tabs d-inline-flex card-header-tabs ml-3" id="myTab">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">All</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          {{ csrfField() }}
+          @!component('components.table',
+          url ='/atividades',
+          resource = '/chamados',
+          cabecalho = ['#','Date', 'User', 'Problem', 'Operator', 'Occurrence', 'Status'],
+          colunas = ['chamado_id', 'created_at', 'chamado.usuario.nomeAbreviado', 'chamado.problema.nome',
+          'usuario.nomeAbreviado', 'descricao', 'chamado.status.nome'],
+          editar = true,
+          editar_id = 'chamado_id',
+          order = 1,
+          initCompleteFn = 'populateAtividades',
+          detail = 'chamado.descricao'
+          )
+        </div>
+      </div>
+    </div>
+  </section>
+      @endsection

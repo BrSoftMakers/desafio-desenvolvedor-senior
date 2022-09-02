@@ -1,0 +1,249 @@
+@layout('layouts.master')
+@section('body')
+
+<main id="main" class="main">
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              @if(chamado)
+              Editar chamado <span class="badge badge-secondary p-2 border border-secondary">{{chamado.id}}</span>
+              @include('chamado.toolbar')
+              @else
+              Novo Chamado
+              @endif
+            </h5>
+
+            <form action="{{ route('ChamadoController.store') }}" method="POST" id="form" enctype="multipart/form-data" class="row g-3">
+              {{ csrfField() }}
+              <div class="col-md-6">
+                <label for="inputName5" class="form-label">Problema</label>
+                <select required name="problema_id" class="form-select" data-live-search="true" title="Select"
+                  data-style="mySelectPicker">
+                  @each(area in areas)
+                  <optgroup label="{{area.nome}}">
+                    @each(problema in area.problemas)
+                    <option data-dica="{{problema.dica}}" value="{{problema.id}}">{{problema.nome}}</option>
+                    @endeach
+                  </optgroup>
+                  @endeach
+                </select>
+              </div>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('problema'), hasErrorFor('problema')) }}
+
+              <div class="col-md-6">
+                <label for="inputName5" class="form-label">Status</label>
+                @if(chamado)
+                <label for="status_id" class="form-label">Status</label>
+                <select required name="status_id" class="form-select" data-live-search="true" title="Select"
+                  data-style="mySelectPicker">
+                  @each(status in status)
+                  <option value="{{status.id}}">{{status.nome}}</option>
+                  @endeach
+                </select>
+                @else
+                <label for="status_id">Status</label>
+                <input required type="text" value="Waiting" class="form-select" disabled>
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('status'), hasErrorFor('status')) }}
+                @endif
+              </div>
+
+              @if(chamado)
+              <div class="col-md-6">
+                <label for="descricaco" class="form-label">Descrição</label>
+                <textarea required id="descricao" name="descricao" class="form-control" rows="5">{{(chamado.descricao ? chamado.descricao : '')}}</textarea>
+                {{-- elIf('<span class="text-danger">$self</span>', getErrorFor('descricaco'), hasErrorFor('descricaco')) --}}
+              </div>
+              @else
+              <div class="col-md-6">
+                <label for="descricaco" class="form-label">Descrição</label>
+                <textarea required id="descricao" name="descricao" class="form-control" rows="5">{{(chamado.descricao ? chamado.descricao : '')}}</textarea>
+                {{-- elIf('<span class="text-danger">$self</span>', getErrorFor('descricaco'), hasErrorFor('descricaco')) --}}
+              </div>
+              <div class="col-md-6">
+                <label for="descricaco" class="form-label">Lista de Problemas</label>
+                <textarea id="dica" rows="5" class="bg-light p-2 rounded border form-control" ></textarea>
+              </div>
+              @endif
+
+          @if(chamado.solucao)
+          <div class="col-md-12">
+            <label for="solucao" class="form-label">Solução</label>
+            <input type="text" name="solucao" class="form-control" disabled value="{{ chamado.solucao }}">
+          </div>
+          @endif
+
+          <div class="col-md-6">
+            <label for="usuario" class="form-label">Usario</label>
+            @if(user.funcao === 'M')
+            {{-- se for usuario comum ja vem preenchido com seu nome --}}
+            <input type="text" value="{{user.nome}}" name="usuario" class="form-control" disabled>
+            {{ elIf('<span class="text-danger">$self</span>', getErrorFor('usuario'), hasErrorFor('usuario')) }}
+            @else
+            {{-- se for admin ou operador abre um combo com os usuarios --}}
+            <select required name="usuario_id" class="form-select" data-live-search="true" title="Select" data-style="mySelectPicker">
+              @each(usuario in usuarios)
+              <option data-email="{{usuario.email}}" value="{{usuario.id}}">{{usuario.nome}}</option>
+              @endeach
+            </select>
+            @endif
+            <small id="userEmail" class="form-text text-primary ml-1 mt-0">
+            </small>
+          </div>
+
+
+          <div class="col-md-2">
+            <label for="ramal" class="form-label">Telefone</label>
+            <input type="text" value="{{ user.ramal ? user.ramal : '' }}" name="ramal"
+              class="form-control" minlength="4" maxlength="4">
+            {{-- elIf('<span class="text-danger">$self</span>', getErrorFor('ramal'), hasErrorFor('ramal')) --}}
+          </div>
+
+
+          <div class="col-md-4">
+            <label for="patrimonio" class="form-label">Equipmamento (optional)</label>
+            <input type="number" value="{{ old('patrimonio', '') }}" name="patrimonio"
+              class="form-control">
+             {{--  elIf('<span class="text-danger">$self</span>', getErrorFor('patrimonio'), hasErrorFor('patrimonio')) --}}
+          </div>
+
+        <div class="col-md-5">
+          <label for="setor_id" class="form-label">Departmento</label>
+          <select required name="setor_id" class="form-select" data-live-search="true"
+            title="Select" data-style="mySelectPicker">
+            @each(setor in setores)
+            <option value="{{setor.id}}">{{setor.nome}}</option>
+            @endeach
+          </select>
+          {{ elIf('<span class="text-danger">$self</span>', getErrorFor('setor'), hasErrorFor('setor')) }}
+        </div>
+
+        <div class="col-md-4">
+          <label for="predio_id" class="form-label">Predio</label>
+          <select required name="predio_id" class="form-select" data-live-search="true"
+            title="Select" data-style="mySelectPicker">
+            @each(predio in predios)
+            <option value="{{predio.id}}">{{predio.nome}}</option>
+            @endeach
+          </select>
+          {{ elIf('<span class="text-danger">$self</span>', getErrorFor('predio'), hasErrorFor('predio')) }}
+        </div>
+
+        <div class="col-md-3">
+          <label for="local" class="form-label">Sala</label>
+          <input required type="text" value="{{ old('local', '') }}" name="local" class="form-control">
+        </div>
+
+      <div class="col-md-6">
+        <label for="anexo" class="form-label">Anexo</label>
+        @if(chamado.anexo)
+        <br>
+        <a href="/uploads/{{chamado.anexo}}">File</a>
+        <br>
+        @endif
+        <input type="file" class="form-control-file" name="anexo" accept=".jpg, .jpeg, .png, .pdf">
+        <small class="form-text text-muted">
+          Arquivos com a extensão .jpg .png .pdf
+        </small>
+      </div>
+
+
+      <div class="col-md-6 text-right">
+        @if(chamado)
+        <small><strong>Date: </strong>{{chamado.created_at}}</small>
+        @endif
+        <br><br>
+        @unless(chamado)
+        @!component('components.btnVoltar', type='btn btn-secondary')
+        @endunless
+        @!component('components.btnSalvar', id='btnSalvar', type='btn btn-primary')
+      </div>
+    </div>
+
+    </form>
+    </div>
+    </div>
+    @if(ocorrencias.length > 0)
+    <div class="card mt-3 mb-5">
+      <div class="card-header">Histórico</div>
+      <div class="card-body">
+
+        <table class="table table-striped table-sm my-table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(ocorrencia in ocorrencias)
+            <tr>
+              <td>{{ocorrencia.created_at}}</td>
+              <td>{{ocorrencia.usuario.nome}}</td>
+              <td>{{ocorrencia.descricao}}</td>
+            </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+    @endif
+    </div>
+    @endsection
+    @section('scripts')
+    {{ script('js/actionsChamado') }}
+    <script>
+      $(document).ready(function() {
+            $("[name='descricao']").summernote({
+                @unless(chamado)
+                minHeight: 210,
+                maxHeight: 210,
+                @else
+                minHeight: 120,
+                @endunless
+                disableResizeEditor: true,
+                focus: false,
+                placeholder: 'Describe the problem in detail...',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline','strikethrough','table', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['misc', ['undo', 'redo', 'fullscreen', 'help']],
+                ]
+            })
+            $('.note-statusbar').hide();
+
+            $("[name='patrimonio']").keypress(function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            })
+
+            @if(chamado)
+                $("[name='usuario_id']").change(function() {
+                    $('#userEmail').html($("[name='usuario_id'] option:selected").data('email'))
+                })
+                $("[name='problema_id']").selectpicker('val', '{{chamado.problema_id}}')
+                $("[name='status_id']").selectpicker('val', '{{chamado.status_id}}')
+                $("[name='usuario_id']").selectpicker('val', '{{chamado.usuario_id}}')
+                $("[name='ramal']").val('{{chamado.ramal}}')
+                $("[name='patrimonio']").val('{{chamado.patrimonio}}')
+                $("[name='setor_id']").selectpicker('val', '{{chamado.setor_id}}')
+                $("[name='predio_id']").selectpicker('val', '{{chamado.predio_id}}')
+                $("[name='local']").val('{{chamado.local}}')
+                $('#form').attr('action', "{{ route('ChamadoController.update', {id: chamado.id}) }}?_method=PUT")
+                $("#form :input").prop("disabled", true)
+                $("[name='descricao']").summernote('disable');
+                $("#btnSalvar").prop("hidden", true)
+
+            @else {{--  novo chamado  --}}
+                $("[name='problema_id']").focus()
+                $("[name='problema_id']").change(function() {
+                        let data = $("option:selected", this).data('dica')
+                        $('#dica').html(data)
+                })
+            @endif
+        })
+    </script>
+    @endsection
