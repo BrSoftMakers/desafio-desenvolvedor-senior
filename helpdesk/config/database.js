@@ -13,7 +13,7 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'sqlite'),
+  connection: Env.get('DB_CONNECTION', 'pg'),
 
   /*
   |--------------------------------------------------------------------------
@@ -26,13 +26,7 @@ module.exports = {
   | npm i --save sqlite3
   |
   */
-  sqlite: {
-    client: 'sqlite3',
-    connection: {
-      filename: Helpers.databasePath('development.sqlite')
-    },
-    useNullAsDefault: true
-  },
+
 
   /*
   |--------------------------------------------------------------------------
@@ -68,11 +62,11 @@ module.exports = {
   pg: {
     client: 'pg',
     connection: {
-      host: Env.get('DB_HOST', 'localhost'),
-      port: Env.get('DB_PORT', ''),
-      user: Env.get('DB_USER', 'root'),
-      password: Env.get('DB_PASSWORD', ''),
-      database: Env.get('DB_DATABASE', 'adonis')
+      host: Env.get('PGS_HOST', 'http://kesavan.db.elephantsql.com'),
+      port: Env.get('DB_PORT', '5432'),
+      user: Env.get('PGS_USER', 'xxsslbln'),
+      password: Env.get('PGS_PASSWORD', 'VQ-VmVSED9gQI8m5bJlPyxj-SeI5jUrn'),
+      database: Env.get('PGS_DB', 'xxsslbln')
     }
   }
 }
