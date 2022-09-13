@@ -1,0 +1,40 @@
+<div class="btn-group btn-group-sm ml-2" role="group" aria-label="Basic example">
+    {{--  somente usuario operador e admin podem atender e gerar ocorrencias  --}}
+        {{--  status 1 = aguardando atendimento; status 2 = em atendimento (sao status padroes do sistema)  --}}
+    @if(user.funcao !== 'M')
+        @if(chamado.status_id == 1)
+            <a href="{{route('atenderChamado', {id: chamado.id})}}" class="btn btn-primary"><i class="fas fa-phone mr-2"></i>Attend</a>
+        @elseif(chamado.status_id !== 1 && chamado.status_id !== 3 && chamado.status_id !== 4)
+            <button type="button" class="btn btn-info px-4" data-toggle="modal" data-target="#encerrarModal"><i class="fas fa-check mr-2"></i>Close</button>
+            <button type="button" class="btn btn-primary px-4" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus mr-2"></i>New occurrence</button>
+        @endif
+    @endif
+    <button id="btnEditar" type="button" class="btn btn-dark px-4"><i class="fas fa-edit mr-2"></i>Edit</button>
+    <button id="btnImprimir" type="button" class="btn btn-secondary px-4"><i class="fas fa-print mr-2"></i>Print</button>
+
+    {{-- só pode cancelar se já não estiver cancelado ou encerrado    --}}
+    {{--  status 3 = encerrado e status 4 = cancelado -> padrao do sistema  --}}
+    @if(chamado.status_id !== 3 && chamado.status_id !== 4)
+        <button type="button" class="btn btn-danger px-4" data-toggle="modal" data-target="#cancelarModal"><i class="fas fa-ban mr-2"></i>Cancel</button>
+    @endif
+</div>
+    @include('chamado.encerrar')
+    @include('chamado.cancelar')
+    @include('chamado.ocorrer')
+<script>
+    $('#btnImprimir').click(function() {
+        window.print()
+    })
+    $('#btnEditar').click(function() {
+        $("#form :input").prop("disabled", false)
+        $("[name='descricao']").summernote('enable');
+        $("#btnSalvar").prop("hidden", false)
+
+        {{--  certos campos nao sao editaveis pelos usuarios comuns  --}}
+        if('{{user.funcao}}' === 'M') {
+            $("[name='solucao']").prop("disabled", true)
+            $("[name='usuario']").prop("disabled", true)
+            $("[name='status_id']").prop("disabled", true)
+        }
+    })
+</script>

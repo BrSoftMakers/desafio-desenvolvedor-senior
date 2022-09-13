@@ -1,0 +1,43 @@
+@layout('layouts.master') 
+@section('body')
+
+<div class="mx-auto" style="max-width: 1000px;">
+    <div class="card">
+        <div class="card-header">
+            User options
+        </div>
+        <div class="card-body">
+            <form action="{{route('opcoes')}}" method="POST">
+            {{ csrfField() }}
+                <div class="form-group row">
+                    <label for="inputRamal" class="col-sm-2 col-form-label">Phone</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="ramal" class="form-control" placeholder="Ramal" minlength="4" maxlength="4" value="{{usuario.ramal ? usuario.ramal : ''}}">
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            A four digit (usually a branch line) number used for auto fill when opening a new ticket.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Notifications</div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            
+                            <input class="form-check-input" name="receberEmail" type="checkbox" id="gridCheck1" {{usuario.receberEmail ? "checked": ""}}>
+                            <label class="form-check-label" for="gridCheck1">
+                                Receive email notifications?
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10 text-right">
+                        @!component('components.btnVoltar', type='secondary btn-sm')
+                        @!component('components.btnSalvar', type='primary btn-sm')
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+@endsection

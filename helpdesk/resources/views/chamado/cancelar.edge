@@ -1,0 +1,31 @@
+<div class="modal fade" id="cancelarModal" tabindex="-1" role="dialog" aria-labelledby="cancelarModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelarModalLabel">Cancel ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formCancelar" action="{{route('cancelarChamado', {id: chamado.id})}}" method="POST">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="movi">Reason</label>
+                <textarea name="motivo" class="form-control form-control-sm" rows="3" required></textarea> 
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button id="btnCancelarChamado" type="submit" form="formCancelar" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#btnCancelarChamado').click(function () {
+    $('#cancelarModal').modal('hide')
+  })
+</script>

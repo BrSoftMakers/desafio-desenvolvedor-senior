@@ -1,0 +1,18 @@
+@layout('layouts.master') 
+@section('sidebar')
+    <a href="/areas/create" class="btn btn-dark btn-block">New area</a>
+    <div class="mt-3">
+        @!component('components.btnVoltar', type='primary', type2='block')
+    </div>
+@endsection 
+@section('mainContent')
+        {{ csrfField() }}
+        @!component('components.table', 
+            url ='/areas', 
+            resource ='/areas', 
+            cabecalho = ['#','Name', 'Description'],
+            colunas = ['id', 'nome', 'descricao'],
+            editar = true,
+            deletar = true
+        )
+@endsection

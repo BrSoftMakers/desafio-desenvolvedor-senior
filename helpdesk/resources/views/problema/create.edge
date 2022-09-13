@@ -1,0 +1,72 @@
+@layout('layouts.master')
+@section('body')
+<div  class="mx-auto" style="max-width: 600px;" >
+        <legend>
+        @if(problema)
+            Edit problem 
+        @else
+            New problem
+        @endif
+        </legend>
+        <hr>
+        <form action="{{{ (problema ? route('ProblemaController.update', {id: problema.id}) + '?_method=PUT' : route('ProblemaController.store')) }}}" method="POST">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="nome">Name</label>
+                <input required type="text" name="nome" class="form-control form-control-sm" placeholder="Problem's name" value="{{{ problema.nome ? problema.nome : old('nome', '')}}}">
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+            <div class="form-group">
+                <label for="dica">Hint</label>
+                <textarea name="dica" class="form-control form-control-sm">{{{ problema.dica ? problema.dica : old('dica', '')}}}</textarea>
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('dica'), hasErrorFor('dica')) }}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="area">Area</label>
+                    <select required name="area_id" class="form-control form-control-sm custom-select">
+                        <option value="" disabled selected>Select...</option>
+                        @each(area in areas)
+                            <option value="{{{area.id}}}">{{area.nome}}</option>
+                        @endeach
+                    </select>
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('area_id'), hasErrorFor('area_id')) }}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="sla">SLA</label>
+                    <input required type="number" name="sla" class="form-control form-control-sm" placeholder="Hours" value="{{{ problema.sla ? problema.sla : old('sla', '')}}}">
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('sla'), hasErrorFor('sla')) }}
+                </div>
+                
+                <div class="form-group col-md-3">
+                    <label for="area">Priority</label>
+                    <select required name="prioridade" class="form-control form-control-sm custom-select">
+                        <option value="Normal">Normal</option>
+                        <option value="High">High</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('prioridade'), hasErrorFor('prioridade')) }}
+                </div>
+            </div>
+            <hr>
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+        </form>
+</div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $("[name='dica']").summernote({
+                minHeight: 200,
+                placeholder: 'Optional'
+            })
+        })
+        @if(problema)
+            $("[name='area_id']").val('{{problema.area_id}}')
+            $("[name='prioridade']").val('{{problema.prioridade}}')
+        @endif
+    </script>
+
+@endsection

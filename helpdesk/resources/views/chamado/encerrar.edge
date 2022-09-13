@@ -1,0 +1,31 @@
+<div class="modal fade" id="encerrarModal" tabindex="-1" role="dialog" aria-labelledby="encerrarModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="encerrarModalLabel">Close ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formEncerrar" action="{{route('encerrarChamado', {id: chamado.id})}}" method="POST">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="solucao">Solution</label>
+                <textarea name="solucao" class="form-control form-control-sm" rows="3" required></textarea> 
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <button id="btnEncerrarChamado" type="submit" form="formEncerrar" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#btnEncerrarChamado').click(function () {
+    $('#encerrarModal').modal('hide')
+  })
+</script>

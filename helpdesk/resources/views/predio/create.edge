@@ -1,0 +1,29 @@
+@layout('layouts.master')
+@section('body')
+<div  class="mx-auto" style="max-width: 600px;" >
+        <legend>
+        @if(predio)
+            Edit building
+        @else
+            New building
+        @endif
+        </legend>
+        <hr>
+        <form action="{{{ (predio ? route('PredioController.update', {id: predio.id}) + '?_method=PUT' : route('PredioController.store')) }}}" method="POST">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="nome">Name</label>
+                <input required type="text" name="nome" class="form-control form-control-sm" placeholder="Name of the building" value="{{{ predio.nome ? predio.nome : old('nome', '')}}}">
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+                <div class="form-group">
+                    <label for="descricao">Description</label>
+                    <input type="text" name="descricao" class="form-control form-control-sm" placeholder="Optional" value="{{{ predio.descricao ? predio.descricao : ''}}}">
+                    {{ elIf('<span class="text-danger">$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
+                </div>
+            <hr>
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+        </form>
+</div>
+@endsection

@@ -1,0 +1,51 @@
+@layout('layouts.master')
+@section('body')
+<div  class="mx-auto" style="max-width: 600px;" >
+        <legend>
+        @if(status)
+            Edit status
+        @else
+            New status
+        @endif
+        </legend>
+        <hr>
+        <form action="{{ route('StatusController.store') }}" method="POST" id="form">
+            {{ csrfField() }}
+            <div class="form-group">
+                <label for="nome">Name</label>
+                <input type="text" value="{{ old('nome', '') }}" name="nome" class="form-control form-control-sm" placeholder="Status' name" required>
+                {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="habilitado">Enabled</label>
+                        <select name="habilitado" class="form-control form-control-sm custom-select" required>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('habilitado'), hasErrorFor('habilitado')) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="habilitadoOperador">Allow Operator</label>
+                        <select name="habilitadoOperador" class="form-control form-control-sm custom-select" required>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        {{ elIf('<span class="text-danger">$self</span>', getErrorFor('habilitadoOperador'), hasErrorFor('habilitadoOperador')) }}
+                    </div>
+                </div>
+            <hr>
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+        </form>
+</div>
+
+@if(status)
+    <script>
+        $("[name='nome']").val('{{status.nome}}')
+        $("[name='habilitado']").val('{{status.habilitado}}')
+        $("[name='habilitadoOperador']").val('{{status.habilitadoOperador}}')
+        $('#form').attr('action', "{{ route('StatusController.update', {id: status.id}) }}?_method=PUT")
+    </script>
+@endif
+@endsection

@@ -1,0 +1,18 @@
+@layout('layouts.master') 
+@section('sidebar')
+    <a href="/setores/create" class="btn btn-dark btn-block">New Department</a>
+    <div class="mt-3">
+        @!component('components.btnVoltar', type='primary', type2='block')
+    </div>
+@endsection 
+@section('mainContent')
+        {{ csrfField() }}
+        @!component('components.table', 
+            url ='/setores', 
+            resource ='/setores', 
+            cabecalho = ['#','Name', 'Description', 'Headquarter'],
+            colunas = ['id', 'nome', 'descricao', 'centro'],
+            editar = true,
+            deletar = true
+        )
+@endsection

@@ -1,0 +1,87 @@
+@layout('layouts.master')
+@section('body')
+<main id="main" class="main">
+  <section class="section dashboard">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            @if(usuario)
+            Editar Usuário
+            @else
+            Criar Usuário
+            @endif
+          </div>
+
+          <form action="{{ route('UsuarioController.store') }}" method="POST" id="form">
+            {{ csrfField() }}
+
+            <div class="row mb-3">
+              <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" value="{{ old('nome', '') }}" name="nome" placeholder="Nome Completo" required>
+              </div>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('nome'), hasErrorFor('nome')) }}
+            </div>
+
+            <div class="row mb-3">
+              <label for="login" class="col-sm-2 col-form-label">Login / Username</label>
+              <div class="col-sm-10">
+                <input type="text" value="{{ old('login', '') }}" name="login" class="form-control" placeholder="Login / Username"
+                required>
+              </div>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('login'), hasErrorFor('login')) }}
+            </div>
+
+            <div class="row mb-3">
+              <label for="senha" class="col-sm-2 col-form-label">Senha</label>
+              <div class="col-sm-10">
+                <input type="text" value="" name="senha" class="form-control" placeholder="Senha"
+                required>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="email" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" value="{{ old('email', '') }}" name="email" class="form-control" required placeholder="email@email.com">
+              </div>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+            </div>
+
+            <div class="row mb-3">
+              <label for="funcao" class="col-sm-2 col-form-label">Função</label>
+              <div class="col-sm-10">
+                <select name="funcao" class="form-select" required>
+                  <option value="M">User</option>
+                  <option value="O">Operator</option>
+                  <option value="A">Administrator</option>
+              </select>
+              {{ elIf('<span class="text-danger">$self</span>', getErrorFor('funcao'), hasErrorFor('funcao')) }}
+              </div>
+            </div>
+
+
+            <div class="text-center">
+            @!component('components.btnVoltar', type='secondary btn-sm')
+            @!component('components.btnSalvar', type='primary btn-sm')
+            </div>
+          </form>
+        </div>
+
+        @if(usuario)
+        <script>
+          $("[name='nome']").val('{{usuario.nome}}')
+            $("[name='login']").val('{{usuario.login}}')
+            $("[name='senha']").val('{{usuario.senha}}')
+            $("[name='email']").val('{{usuario.email}}')
+            $("[name='funcao']").val('{{usuario.funcao}}')
+            $('#form').attr('action', "{{ route('UsuarioController.update', {id: usuario.id}) }}?_method=PUT")
+        </script>
+        @endif
+      </div>
+    </div>
+    </div>
+  </section>
+</main>
+@endsection
