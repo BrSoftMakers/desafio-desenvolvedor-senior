@@ -47,3 +47,12 @@ Para acessar como administrador, deverá ser utilizada a seguinte combinação:
 -User: admin
 -PSW: admin
 
+### Notas de Uso
+- O banco de dados é uma instancia de Postgres em Cloud.
+- Caso queiram ver a estrutura criada, seguem os acessos: 
+DB_HOST=kesavan.db.elephantsql.com
+DB_PORT=5432
+DB_USER=xxsslbln
+DB_PASSWORD=VQ-VmVSED9gQI8m5bJlPyxj-SeI5jUrn
+DB_DATABASE=xxsslbln
+
